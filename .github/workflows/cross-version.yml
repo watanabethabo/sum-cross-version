@@ -1,0 +1,24 @@
+name: sum-cross-version
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [14, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+    steps:
+      - name: 取出程式碼
+        uses: actions/checkout@v4
+      - name: 安裝 Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: 跑測試 + 有界量測
+        run: |
+          node --version
+          node test/sum.test.js
